@@ -4,6 +4,8 @@ import { HiArrowUp } from "react-icons/hi";
 import FormattedResponse from '../components/FormatResponse.jsx'
 import { CopyTextBlock } from '../components/utils.jsx'
 
+const backendBaseUrl = import.meta.env.VITE_BACKEND_URL
+
 export const IdeaModule = () => {
     const [text, setText] = useState('')
     const [answerList, setAnswerList] = useState([])
@@ -17,7 +19,7 @@ export const IdeaModule = () => {
         
         try { 
             const response = await axios.post(
-                'http://localhost:3001/ask', 
+                `${backendBaseUrl}/ask`,
                 { query: userInput },
                 {
                     headers: {
