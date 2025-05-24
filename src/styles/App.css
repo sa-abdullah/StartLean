@@ -1,0 +1,25 @@
+/* #scroll-container {
+    width: 100%;
+    overflow: hidden;
+    background:#f0f0f0;
+} */
+
+/* #scroll-content {
+    display: flex;
+    width: calc(700px * 6); 
+    animation: slide 12s steps(6) infinite;
+} */
+
+/* #item {
+    white-space: nowrap; 
+    flex-shrink: 0; 
+} */
+
+/* @keyframes slide {
+    0% {
+        transform: translateX(0);
+    } 
+    100% {
+        transform: translate(-4200px);
+    }
+} */
