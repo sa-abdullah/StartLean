@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useNavigate } from 'react';
 import { leanAuth } from '../../backend/auth'; 
 import { createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
-    // GoogleAuthProvider, 
-    // signInWithPopup 
+    GoogleAuthProvider, 
+    signInWithPopup 
 } from 'firebase/auth';
 
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../components/globalContext'
 
 const AuthForm = () => {
     const [isSignUp, setIsSignUp] = useState(true)
@@ -15,26 +16,33 @@ const AuthForm = () => {
     const [error, setError] = useState("")
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/
+    const { user, setUser } = useAuth()
+
 
     const location = useLocation(); 
     useEffect(() => {
-    if (location?.state?.isSignUp === false) {
-        setIsSignUp(true) 
-    } else {
-        setIsSignUp(false)
+        if (location?.state?.isSignUp === false) {
+            setIsSignUp(false) 
+        } else {
+            setIsSignUp(true)
+        }
+    }, [location.state])
+
+    const navigate = useNavigate()
+
+    const handleGoogleSignin = async() => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(leanAuth, provider);
+            const token = await result.user.getIdToken()
+            localStorage.setItem(token)  
+            navigate('/dashboard')
+            setEmail("")          
+            setPassword("")
+        } catch (err) {
+            setError("Error signing in with Google", err.message)
+        }
     }
-}, [location.state])
-
-
-    // const handleGoogleSignin = async() => {
-    //     const provider = GoogleAuthProvider();
-    //     try {
-    //         const result = await signInWithPopup(leanAuth, provider);
-    //         const user = result.user
-    //     } catch (err) {
-    //         setError("Error igning in with Google", err)
-    //     }
-    // }
     
 
     const handleSubmit = async (e) => {
@@ -52,11 +60,19 @@ const AuthForm = () => {
         }
 
         try {
-            if (isSignUp) {
-                await createUserWithEmailAndPassword(leanAuth, email, password)
-            } else {
-                await signInWithEmailAndPassword(leanAuth, email, password)
-            }
+            const userCred = isSignUp ?
+            await createUserWithEmailAndPassword(leanAuth, email, password) :
+            await signInWithEmailAndPassword(leanAuth, email, password)
+            
+            const token = await userCred.user.getIdToken()
+            localStorage.setItem('token', token)
+            console.log('user signed in successfully', userCred.user)
+            setUser(userCred.user)
+            navigate('/dashboard')
+
+            setEmail("")
+            setPassword("")
+
         } catch (err) {
             setError(err.message)
         }
@@ -73,9 +89,9 @@ const AuthForm = () => {
                     {error && <p class="text-red-500">{error}</p>}
                     <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">{isSignUp ? "Sign Up" : "Log In"}</button>
                 </form>
-                {/* <button onClick={handleGoogleSignin} class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                <button onClick={handleGoogleSignin} class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Sign In With Google
-                </button> */}
+                </button>
                 <p class="mt-4 text-sm text-center">
                     { isSignUp ? "Already Have an Account?" : "Don't Have an Account?"}
                     <button onClick={() => setIsSignUp(!isSignUp)} class="ml-2 text-blue-500 underline">

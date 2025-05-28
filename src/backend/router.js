@@ -1,9 +1,12 @@
 import express from 'express'
-import refineIdea from './getIdea.js'
+// import refineIdea from './getIdea.js'
+import { askGroq } from './groq.js'
+import  { Idea } from './dataModel.js'
+import verifyToken from './firebase.js'
 
 const router = express.Router()
 
-router.post('/', async (req, res) => {
+router.post('/ideas', async (req, res) => {
     const { query } = req.body
 
     if (!query) {
@@ -11,11 +14,34 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const result = await refineIdea({ query })
-        res.status(200).json({ result })
+        const aiResponse = await askGroq(query)
+        if (!aiResponse) {
+            return res.status(500).json({error: 'Failed to get a reponse from Groq'})
+        }
+        
+        const newChat = new Idea({
+            idea: query, 
+            aiResponse, 
+            createdAt: Date.now(), 
+            userID: req.user.uid || null
+        })
+        await newChat.save()
+
     } catch (err) {
         console.error("Server error:", err.message)
-        res.status(500).json({ error: 'Internal server error' })
+        return res.status(500).json({ error: 'Internal server error' })
+    }
+})
+
+
+
+router.get('/ideas', verifyToken, async (req, res)  => {
+    try {
+        const ideas = await Idea.find({ userId: req.user.uid}).sort({ createdAt: -1 })
+        res.status(200).json(ideas)
+    } catch (err) {
+        console.error('Error fetching ideas:', err.message)
+        res.status(500).json({ error: 'Failed to retrieve ideas' })
     }
 })
 
