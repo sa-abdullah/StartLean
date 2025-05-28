@@ -10,6 +10,11 @@ const refineIdea = async ({ query }) => {
     
     const response = await askGroq(query)
 
+    if (!response) {
+        throw new Error('AskGroq not returning response')
+    }
+    // console.log(response)
+
     const newChat = new Idea({
         idea: query, 
         aiResponse: response, 

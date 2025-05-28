@@ -31,7 +31,7 @@ export const IdeaModule = () => {
             const result = data?.result
             console.log(response?.data?.result)
 
-            setAnswerList(prevAnswers => [...prevAnswers, { question: userInput, response: result }])
+            setAnswerList(prevAnswers => [...prevAnswers, { response: result }])
             setText('')
 
         } catch (err) {
@@ -39,11 +39,11 @@ export const IdeaModule = () => {
             console.error('Frontend fetch error:', err)
 
             if (!navigator.onLine) {
-                setAnswerList(prev => [...prev, { question: userInput, response: '🚫 No internet connection. Please check your network' }]);
+                setAnswerList(prev => [...prev, { response: '🚫 No internet connection. Please check your network' }]);
             } else if (err.message === 'Network Error') {
-                setAnswerList(prev => [...prev, { question: userInput, response: '🌐 Network Error: Could not connect to server.' }]);
+                setAnswerList(prev => [...prev, { response: '🌐 Network Error: Could not connect to server.' }]);
             } else {
-                setAnswerList(prev => [...prev, { question: userInput, response: '❌ Something went wrong. Please try again' }]);
+                setAnswerList(prev => [...prev, { response: '❌ Something went wrong. Please try again' }]);
             }
         }
     }
@@ -54,9 +54,9 @@ export const IdeaModule = () => {
             <ul class="overflow-y-scroll w-[80%]">
                 {[...answerList].reverse().map((item, index) => (
                     <div class="relative w-full h-fit prose px-3 py-6" key={index}>
-                        <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.question}</p>
-                        <FormattedResponse content={item.response}/>
-                        <CopyTextBlock text={item.response}/>
+                        <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response.idea}</p>
+                        <FormattedResponse content={item.response.aiResponse}/>
+                        <CopyTextBlock text={item.response.aiResponse}/>
                     </div>
                 ))
             }
