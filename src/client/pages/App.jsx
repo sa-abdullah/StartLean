@@ -4,8 +4,6 @@ import { Footer } from '../components/footer'
 import '../styles/App.css'
 
 
-
-
 function App() {
 
   return (
