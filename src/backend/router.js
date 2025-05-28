@@ -4,14 +4,14 @@ import refineIdea from './getIdea.js'
 const router = express.Router()
 
 router.post('/', async (req, res) => {
-    const { description } = req.body
+    const { query } = req.body
 
-    if (!description) {
-        return res.status(400).json({error: 'Missing query description'})
+    if (!query) {
+        return res.status(400).json({error: 'Missing query'})
     }
 
     try {
-        const result = await refineIdea({ description})
+        const result = await refineIdea({ query })
         res.status(200).json({ result })
     } catch (err) {
         console.error("Server error:", err.message)
