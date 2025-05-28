@@ -16,7 +16,7 @@ const AuthForm = () => {
     const [error, setError] = useState("")
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/
-    const { user, setUser } = useAuth()
+    const { setUser } = useAuth()
 
 
     const location = useLocation(); 
