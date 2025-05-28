@@ -6,7 +6,7 @@ import verifyToken from './firebase.js'
 
 const router = express.Router()
 
-router.post('/ideas', async (req, res) => {
+router.post('/ideas', verifyToken, async (req, res) => {
     const { query } = req.body
 
     if (!query) {
