@@ -54,8 +54,10 @@ export const IdeaModule = () => {
             '🌐 Network Error: Could not connect to server.' :
             '❌ Something went wrong. Please try again';
             setAnswerList(prev => [...prev, { response: message }])
+        }
     }
 
+    
     return (
         <div class="h-full flex flex-col items-center justify-center gap-10">
             {!answerList && <h2 class="text-3xl">Tell Me Your Startup Idea</h2>}
