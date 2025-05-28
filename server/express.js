@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 import router from '../src/backend/router.js'
 
 const app = express()
-const PORT = 3001
+const PORT = process.env.PORT || 3000;
 
 app.use(cors())
 app.use(express.json())
