@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { leanAuth } from './auth'; 
+import { leanAuth } from '../../backend/auth'; 
 import { createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     // GoogleAuthProvider, 
@@ -7,8 +7,6 @@ import { createUserWithEmailAndPassword,
 } from 'firebase/auth';
 
 import { useLocation } from 'react-router-dom';
-
-
 
 const AuthForm = () => {
     const [isSignUp, setIsSignUp] = useState(true)

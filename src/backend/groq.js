@@ -1,10 +1,7 @@
-// import axios from 'axios'
+import Groq from 'groq-sdk'
 import dotenv from 'dotenv'
 dotenv.config()
-import Groq from 'groq-sdk'
 
-
-// const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY

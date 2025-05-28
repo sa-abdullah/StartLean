@@ -27,7 +27,6 @@ export const Sidebar = ({ activeTab, setActiveTab }) => {
                             <button onClick={() => setActiveTab(tab.id)} class={`flex gap-2 items-center w-full text-left px-4 py-2 mb-2 rounded ${activeTab === tab.id ? "bg-blue-600 text-white" : "hover:bg-gray-200"}`}>
                                 {tab?.icon}
                                 {tab.label} 
-                                
                             </button>
                         </li>
                     ))

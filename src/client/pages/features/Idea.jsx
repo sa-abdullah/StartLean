@@ -1,8 +1,8 @@
 import { useRef, useState} from 'react'
 import axios from 'axios'
 import { HiArrowUp } from "react-icons/hi";
-import FormattedResponse from '../components/FormatResponse.jsx'
-import { CopyTextBlock } from '../components/utils.jsx'
+import FormattedResponse from '../../components/FormatResponse.jsx'
+import { CopyTextBlock } from '../../components/utils.jsx'
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_URL
 

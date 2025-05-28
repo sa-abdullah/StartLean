@@ -1,5 +1,5 @@
-import { IdeaModule } from './Idea.jsx'
-import { SpecModule } from './Spec.jsx'
+import { IdeaModule } from './features/Idea.jsx'
+import { SpecModule } from './features/Spec.jsx'
 
 export const Workspace = ({ activeTab }) => {
     return (

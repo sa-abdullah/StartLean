@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Nav } from '../components/nav'
-import { Sidebar } from './Sidebar'
+import { Sidebar } from '../components/Sidebar'
 import { Workspace } from './workspace'
 import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarRightExpand } from 'react-icons/tb';
 

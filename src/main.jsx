@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Link} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
-import App from './pages/App.jsx'
-import AuthForm from './pages/authform.jsx'
-import Dashboard from './pages/Dashboard.jsx'
+import App from './client/pages/App.jsx'
+import AuthForm from './client/pages/authform.jsx'
+import Dashboard from './client/pages/Dashboard.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
