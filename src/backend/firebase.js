@@ -6,7 +6,9 @@ import { User } from './dataModel.js'
 import admin from 'firebase-admin'
 import { readFileSync } from 'fs'
 
-const serviceAccount = JSON.parse(readFileSync(process.env.SERVICE_ACCOUNT_PATH, 'utf8'))
+const serviceAccountPath = process.env.SERVICE_ACCOUNT_PATH || path.resolve('C:/Users/USER/Documents/My_software_development_journey/Projects/React/service-account-file-firebase.json')
+
+const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'))
 
 if (!admin.apps.length) {
     admin.initializeApp({
