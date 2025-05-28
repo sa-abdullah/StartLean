@@ -27,6 +27,8 @@ router.post('/ideas', async (req, res) => {
         })
         await newChat.save()
 
+        return res.status(201).json(newChat)
+
     } catch (err) {
         console.error("Server error:", err.message)
         return res.status(500).json({ error: 'Internal server error' })
