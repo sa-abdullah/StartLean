@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { leanAuth } from '../../backend/auth'; 
 import { createUserWithEmailAndPassword, 
@@ -34,10 +34,14 @@ const AuthForm = () => {
     const handleGoogleSignin = async() => {
         const provider = new GoogleAuthProvider();
         try {
-            const result = await signInWithPopup(leanAuth, provider);
-            const token = await result.user.getIdToken()
-            localStorage.setItem(token)  
+            const userCred = await signInWithPopup(leanAuth, provider);
+
+            const token = await userCred.user.getIdToken()
+            localStorage.setItem('token', token)  
+            console.log('user signed in successfully via Google', userCred.user)
+            setUser(userCred.user)
             navigate('/dashboard')
+
             setEmail("")          
             setPassword("")
         } catch (err) {

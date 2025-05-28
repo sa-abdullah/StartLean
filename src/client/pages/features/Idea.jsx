@@ -65,7 +65,7 @@ export const IdeaModule = () => {
                 {[...answerList].reverse().map((item, index) => (
                     <div class="relative w-full h-fit prose px-3 py-6" key={index}>
                         <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response.idea}</p>
-                        <p>{user.displayName}{user.email}</p>
+                        <p>{user?.email}</p>
                         <FormattedResponse content={item.response.aiResponse}/>
                         <CopyTextBlock text={item.response.aiResponse}/>
                     </div>
