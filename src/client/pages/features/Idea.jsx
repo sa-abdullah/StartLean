@@ -29,6 +29,7 @@ export const IdeaModule = () => {
 
             const data = response?.data
             const result = data?.result
+            console.log(response?.data?.result)
 
             setAnswerList(prevAnswers => [...prevAnswers, { question: userInput, response: result }])
             setText('')
