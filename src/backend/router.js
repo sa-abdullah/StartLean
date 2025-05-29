@@ -27,7 +27,7 @@ router.post('/ideas', verifyToken, async (req, res) => {
         })
         await newChat.save()
 
-        return res.status(201).json(newChat)
+        return res.status(201).json({ result: newChat })
 
     } catch (err) {
         console.error("Server error:", err.message)

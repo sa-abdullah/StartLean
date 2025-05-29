@@ -37,9 +37,8 @@ export const IdeaModule = () => {
                     }, 
                 })
 
-            const data = response?.data
-            const result = data?.result
-            console.log(response?.data?.result)
+            const result = response?.data?.result
+            console.log('Frontend fetch result: ', result)
 
             setAnswerList(prevAnswers => [...prevAnswers, { response: result }])
             setText('')
@@ -64,10 +63,16 @@ export const IdeaModule = () => {
             <ul class="overflow-y-scroll w-[80%]">
                 {[...answerList].reverse().map((item, index) => (
                     <div class="relative w-full h-fit prose px-3 py-6" key={index}>
-                        <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response.idea}</p>
-                        <p>{user?.email}</p>
-                        <FormattedResponse content={item.response.aiResponse}/>
-                        <CopyTextBlock text={item.response.aiResponse}/>
+                        {typeof item.response === 'string' ? (
+                            <p class="text-red-500">{item?.response}</p>
+                        ):(
+                            <>
+                                <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response.idea}</p>
+                                <p>{user?.email}</p>
+                                <FormattedResponse content={item?.response?.aiResponse}/>
+                                <CopyTextBlock text={item?.response?.aiResponse}/>
+                            </>
+                        )}
                     </div>
                 ))
             }

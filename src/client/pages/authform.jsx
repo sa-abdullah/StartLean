@@ -45,7 +45,7 @@ const AuthForm = () => {
             setEmail("")          
             setPassword("")
         } catch (err) {
-            setError("Error signing in with Google", err.message)
+            setError(`Error signing in with Google ${err.message}`)
         }
     }
     
