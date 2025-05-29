@@ -11,7 +11,7 @@ export const IdeaModule = () => {
     const [text, setText] = useState('')
     const [answerList, setAnswerList] = useState([])
     const textareaRef = useRef(null)
-    const { user } = useAuth;
+    const { user } = useAuth();
 
     const handleQuery = async (e) => {
         e.preventDefault()

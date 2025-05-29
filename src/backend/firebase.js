@@ -34,6 +34,7 @@ const verifyToken = async (req, res, next) => {
     try {
         const decoded = await admin.auth().verifyIdToken(token)
         req.user = decoded
+        console.log('Decoded User Verified', decoded)
 
         await User.updateOne(
             { uid: decoded.uid }, 
