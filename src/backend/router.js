@@ -23,7 +23,7 @@ router.post('/ideas', verifyToken, async (req, res) => {
             idea: query, 
             aiResponse, 
             createdAt: Date.now(), 
-            userID: req.user.uid || null
+            userId: req.user.uid || null
         })
         await newChat.save()
 
