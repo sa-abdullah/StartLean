@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useGlobal } from './globalContext'
+import { Navigate } from 'react-router-dom'
 import { FaRegCopy } from 'react-icons/fa6'
 
 
@@ -18,4 +20,12 @@ export const CopyTextBlock = ({text}) => {
             {copied ? <span className="text-sm text-green-600 mt-1 block">Copied!</span> :  <FaRegCopy size={20} class="text-gray-600 hover:text-blue-700"/>}
         </button>
     )
+}
+
+
+
+
+export const PrivateRoute = ({ children}) => {
+    const { user } = useGlobal()
+    return user ? children : <Navigate to="/auth"/>
 }

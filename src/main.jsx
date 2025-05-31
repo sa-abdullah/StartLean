@@ -5,18 +5,19 @@ import './index.css'
 import App from './client/pages/App.jsx'
 import AuthForm from './client/pages/authform.jsx'
 import Dashboard from './client/pages/Dashboard.jsx'
-import {AuthProvider} from './client/components/globalContext.jsx'
+import {GlobalProvider} from './client/components/globalContext.jsx'
+import { PrivateRoute } from './client/components/utils.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
+    <GlobalProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App/>}/>
           <Route path="/auth" element={<AuthForm/>}/>
-          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
          </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </GlobalProvider>
   </StrictMode>
 )

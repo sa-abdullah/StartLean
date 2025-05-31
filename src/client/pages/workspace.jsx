@@ -3,7 +3,7 @@ import { SpecModule } from './features/Spec.jsx'
 
 export const Workspace = ({ activeTab }) => {
     return (
-        <main class="flex-1 p-8">
+        <main class="flex-1 p-8 overflow-y-auto">
             {activeTab === "idea" && <IdeaModule/>}
             {activeTab === "spec" && <SpecModule/>}
         </main>

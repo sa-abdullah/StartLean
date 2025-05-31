@@ -16,7 +16,7 @@ export const Nav = () => {
 
     return (
         <>
-        <div class="w-full flex justify-between items-center px-2 md:px-6 text-blue-900 py-3 shadow-lg">
+        <div class="w-full flex justify-between items-center px-2 md:px-6 text-blue-900 py-3 shadow-lg sticky top-0 z-50 bg-white">
             <Link to="/" class="flex items-center gap-3 font-bold text-2xl cursor-default">
                 <img src={logo} alt="startlean" class="w-7 lg:w-10" />
                 <span>StartLean</span>
@@ -25,7 +25,7 @@ export const Nav = () => {
                 {/* <button class="px-4 py-2 rounded-3xl hover:bg-blue-100">Dashboard</button> */}
                 <button class="px-4 py-2 rounded-3xl hover:bg-blue-100">How it Works</button>
                 <button class="px-4 py-2 rounded-3xl hover:bg-blue-100">Pricing</button>
-                <Link to="/dashboard" class="px-4 py-2 bg-blue-900 text-white rounded-3xl hover:bg-blue-100 hover:text-blue-900">Get Started</Link>
+                <button onClick={() => navigate('/auth', { state: {isSignUp: true}})} class="px-4 py-2 bg-blue-900 text-white rounded-3xl hover:bg-blue-100 hover:text-blue-900">Get Started</button>
                 <button class="px-4 py-2 bg-gray-100 rounded-3xl hover:bg-blue-100" onClick={() => navigate('/auth', { state: {isSignUp: true}})}>Login</button>
                 <FaUser size={24} onClick={() => navigate('/auth', { state: {isSignUp: false}})} />
             </div>
