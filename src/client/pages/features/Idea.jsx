@@ -59,7 +59,7 @@ export const IdeaModule = () => {
     
     return (
         <div class="h-full flex flex-col items-center justify-center gap-10">
-            {!answerList && <h2 class="text-3xl">Tell Me Your Startup Idea</h2>}
+            {<h2 class="text-3xl">Tell Me Your Startup Idea</h2>}
             <ul class="overflow-y-scroll w-[80%]">
                 {[...answerList].reverse().map((item, index) => (
                     <div class="relative w-full h-fit prose px-3 py-6" key={index}>
