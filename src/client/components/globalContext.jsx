@@ -1,8 +1,11 @@
 import { useContext, createContext, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 const GlobalContext = createContext()
 import { leanAuth } from '../../backend/auth'
 import { onAuthStateChanged } from 'firebase/auth'
+
+const navigate = useNavigate
 
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_URL
@@ -10,13 +13,14 @@ const backendBaseUrl = import.meta.env.VITE_BACKEND_URL
 export const GlobalProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [answerList, setAnswerList] = useState([])
-    // const [ token, setToken] = useState(null)
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(leanAuth, (currentUser) => {
             if (currentUser) {
                 setUser(currentUser)
                 console.log('user signed in', currentUser)
+            } else {
+                setUser(null)
             }
         });
 
@@ -26,10 +30,10 @@ export const GlobalProvider = ({ children }) => {
     const handleQuery = async (text) => {
         if (!text.trim()) return;
         const userInput = text.trim()
-    
-        const token = localStorage.getItem('token')
-    
-        if (!token) {
+        
+        const token = await user.getIdToken()
+
+        if (!user) {
             alert('Please log in to use this feature')
             return;
         }

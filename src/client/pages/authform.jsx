@@ -4,7 +4,10 @@ import { leanAuth } from '../../backend/auth';
 import { createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     GoogleAuthProvider, 
-    signInWithPopup 
+    signInWithPopup, 
+    setPersistence, 
+    browserLocalPersistence, 
+    browserSessionPersistence
 } from 'firebase/auth';
 import Logo from '../assets/imgs/favicon.png'
 
@@ -43,10 +46,9 @@ const AuthForm = () => {
     const handleGoogleSignin = async() => {
         const provider = new GoogleAuthProvider();
         try {
+            await setPersistence(leanAuth, rememberMe ? browserLocalPersistence : browserSessionPersistence)
+            
             const userCred = await signInWithPopup(leanAuth, provider);
-
-            const token = await userCred.user.getIdToken()
-            rememberMe ? localStorage.setItem('token', token) : sessionStorage.setItem('token', token); 
             console.log('user signed in successfully via Google', userCred.user)
             setUser(userCred.user)
             navigate('/dashboard')
@@ -73,12 +75,12 @@ const AuthForm = () => {
         }
 
         try {
+            await setPersistence(leanAuth, rememberMe ? browserLocalPersistence : browserSessionPersistence)
+
             const userCred = isSignUp ?
             await createUserWithEmailAndPassword(leanAuth, email, password) :
             await signInWithEmailAndPassword(leanAuth, email, password)
             
-            const token = await userCred.user.getIdToken()
-            rememberMe ? localStorage.setItem('token', token) : sessionStorage.setItem('token', token);
             console.log('user signed in successfully', userCred.user)
             setUser(userCred.user)
             navigate('/dashboard')
