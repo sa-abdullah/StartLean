@@ -21,21 +21,7 @@ export const GlobalProvider = ({ children }) => {
         });
 
         return () => unsubscribe()
-    }, [])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }, []);
 
     const handleQuery = async (text) => {
         if (!text.trim()) return;

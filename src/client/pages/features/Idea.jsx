@@ -8,7 +8,7 @@ import { useGlobal } from '../../components/globalContext.jsx'
 export const IdeaModule = () => {
     const [text, setText] = useState('')
     const textareaRef = useRef(null)
-    const { user, answerList, handleQuery } = useGlobal();
+    const { answerList, handleQuery } = useGlobal();
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -33,8 +33,7 @@ export const IdeaModule = () => {
                             </>
                         )}
                     </div>
-                ))
-            }
+                ))}
             </ul>
             <form onSubmit={handleSubmit} class={`w-[83%] h-[22vh] relative ${answerList.length ? 'sticky bottom-0': 'block'}`}>
                 <textarea name="startupIdea" value={text} onChange={(e) => setText(e.target.value)} id="startupIdea" placeholder="Ask about your startup idea..." ref={textareaRef} class={`w-full h-full border-3 border-gray-300 bg-gray-100 rounded-4xl p-6 focus:outline-none focus:border-gray-500`}></textarea>
