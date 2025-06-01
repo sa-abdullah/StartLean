@@ -5,8 +5,6 @@ const GlobalContext = createContext()
 import { leanAuth } from '../../backend/auth'
 import { onAuthStateChanged } from 'firebase/auth'
 
-const navigate = useNavigate
-
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_URL
 

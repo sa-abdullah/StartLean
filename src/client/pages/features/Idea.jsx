@@ -28,8 +28,9 @@ export const IdeaModule = () => {
                         ):(
                             <>
                                 <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response.idea}</p>
-                                <FormattedResponse content={item?.response?.aiResponse}/>
-                                <CopyTextBlock text={item?.response?.aiResponse}/>
+                                <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response?.aiResponse?.summary}</p>
+                                <FormattedResponse content={item?.response?.aiResponse?.reply}/>
+                                <CopyTextBlock text={item?.response?.aiResponse?.reply}/>
                             </>
                         )}
                     </div>

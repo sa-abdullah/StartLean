@@ -19,14 +19,40 @@ export const askGroq = async (query) => {
                     }, 
                     {
                         role: 'user', 
-                        content: query
+                        content: `Answer the question asked by the user: ${query}
+                        Please return:
+                        {
+                          "reply": "<a detailed reply to the user's question>",
+                          "summary": "<a short 5–8 word summary headline for sidebar use>"
+                        }
+                        Only return valid JSON. Do not include commentary.
+                        `
                     }
                 ]
             }, 
         )
-        return response?.choices[0]?.message?.content
+        
+        const raw = response?.choices?.[0]?.message?.content?.trim()
+
+        // Try parsing JSON safely
+        try {
+            const parsed = JSON.parse(raw)
+            return parsed
+
+        } catch (err) {
+            console.error('JSON parsing error:', err.message)
+
+            return {
+                reply: "Sorry, the model returned invalid.",
+                summary: "Invalid output"
+            }
+        }
+
     } catch (error) {
         console.error('GROQ API Error', error.response.data || error.message)
-        return 'Sorry, I could not analyse your startup idea at the moment'
+        return {
+            reply: "Sorry, something went wrong with the Groq API.",
+            summary: "Groq error"
+        }
     }
 }
