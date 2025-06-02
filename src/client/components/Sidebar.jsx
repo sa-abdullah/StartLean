@@ -3,14 +3,14 @@ import { HiOutlineLightBulb, HiOutlinePresentationChartBar, HiOutlineBadgeCheck,
 import { FaRegFileAlt, FaUserSecret, FaPalette } from "react-icons/fa"
 import { useGlobal } from './globalContext'
 import headshot from '../assets/imgs/headshot.jpg'
-import Logo from '../assets/imgs/logo.png'
+// import Logo from '../assets/imgs/logo.png'
 
 
 import { HiOutlinePencilSquare } from "react-icons/hi2"
 
 
 export const Sidebar = ({ activeTab, setActiveTab }) => {
-    const { user } = useGlobal()
+    const { user, historyList } = useGlobal()
     const [tabPaneOpen, setTabPaneOpen] = useState(true)
 
     const tabs = [
@@ -24,6 +24,7 @@ export const Sidebar = ({ activeTab, setActiveTab }) => {
     ]
 
     console.log(user)
+    console.log(historyList)
 
 
 

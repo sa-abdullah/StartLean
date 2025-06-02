@@ -11,6 +11,8 @@ const backendBaseUrl = import.meta.env.VITE_BACKEND_URL
 export const GlobalProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [answerList, setAnswerList] = useState([])
+    const [currentSessionId, setCurrentSessionId] = useState(null)
+    const [historyList, setHistoryList] = useState([])
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(leanAuth, (currentUser) => {
@@ -24,6 +26,28 @@ export const GlobalProvider = ({ children }) => {
 
         return () => unsubscribe()
     }, []);
+
+    useEffect(() => {
+        const fetchHistory = async () => {
+            try {
+                const token = await user.getIdToken()
+                const res = await axios.post(`${backendBaseUrl}/api/history`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                })
+
+                setHistoryList(res.data)
+            } catch (err) {
+                console.error("Failed to fetch history", err)
+            }
+        }
+
+        if (user) {
+            fetchHistory()
+            console.log(historyList)
+        }
+    }, [user, historyList])
 
     const handleQuery = async (text) => {
         if (!text.trim()) return;
@@ -39,7 +63,7 @@ export const GlobalProvider = ({ children }) => {
         try { 
             const response = await axios.post(
                 `${backendBaseUrl}/api/ideas`,
-                { query: userInput },
+                { query: userInput, sessionId: currentSessionId },
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -47,7 +71,12 @@ export const GlobalProvider = ({ children }) => {
                     }, 
                 })
 
-            const result = response?.data?.result
+            const { result, sessionId } = response.data
+
+            if (!currentSessionId) {
+                setCurrentSessionId(sessionId); 
+            }
+
             console.log('Frontend fetch result: ', result)
 
             setAnswerList(prevAnswers => [...prevAnswers, { response: result }])
@@ -65,7 +94,7 @@ export const GlobalProvider = ({ children }) => {
     }
 
     return (
-        <GlobalContext.Provider value={{ user, setUser, answerList, handleQuery }}>
+        <GlobalContext.Provider value={{ user, setUser, answerList, handleQuery, currentSessionId, setCurrentSessionId, historyList, setHistoryList }}>
             {children}
         </GlobalContext.Provider>
     )

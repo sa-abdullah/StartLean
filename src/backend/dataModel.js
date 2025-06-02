@@ -1,7 +1,12 @@
 import mongoose from 'mongoose'
 
 const ideaSchema = new mongoose.Schema({
-
+    
+    sessionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Session', 
+        required: true,
+    }, 
     idea: {
         type: String, 
         required: true
@@ -48,5 +53,22 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema)
 
+const sessionSchema = new mongoose.Schema({
+    userId: {
+        type: String, 
+        required: true, 
+    }, 
+    createdAt: {
+        type: Date, 
+        default: Date.now(), 
+    }, 
+    headline: {
+            type: String,
+            required: true , 
+    },
+})
 
-export { Idea, User }
+const Session = mongoose.model('Session', sessionSchema)
+
+
+export { Idea, User, Session }
