@@ -79,7 +79,7 @@ export const GlobalProvider = ({ children }) => {
 
             setAnswerList(prevAnswers => [...prevAnswers, { response: result }])
 
-            setHistoryList(prev => [
+            setHistoryList(prev => (
                 prev.map(history =>
                     history.sessionId === sessionId ? 
                     {   ...history, 
@@ -87,8 +87,8 @@ export const GlobalProvider = ({ children }) => {
                         answers: [...history.answers, { idea: userInput, answer: result}]
                     } 
                     : history
-                 )
-            ])
+                )
+            ))
 
         } catch (err) {
     
