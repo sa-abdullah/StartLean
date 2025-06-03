@@ -15,7 +15,10 @@ router.post('/ideas', verifyToken, async (req, res) => {
     }
 
     try {
-        const { headline, answer } = await askGroqTwoStep(query)
+        const groqResult = await askGroqTwoStep(query)
+
+        const headline = groqResult.headline
+        const answer = groqResult.answer
 
         let usedSessionId = sessionId
 
