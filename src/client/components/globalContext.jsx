@@ -1,5 +1,5 @@
 import { useContext, createContext, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 const GlobalContext = createContext()
 import { leanAuth } from '../../backend/auth'
@@ -31,12 +31,11 @@ export const GlobalProvider = ({ children }) => {
         const fetchHistory = async () => {
             try {
                 const token = await user.getIdToken()
-                const res = await axios.post(`${backendBaseUrl}/api/history`, {
+                const res = await axios.get(`${backendBaseUrl}/api/history`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     },
-                })
-
+                }); 
                 setHistoryList(res.data)
             } catch (err) {
                 console.error("Failed to fetch history", err)
@@ -45,20 +44,19 @@ export const GlobalProvider = ({ children }) => {
 
         if (user) {
             fetchHistory()
-            console.log(historyList)
         }
-    }, [user, historyList])
+    }, [user])
 
     const handleQuery = async (text) => {
         if (!text.trim()) return;
         const userInput = text.trim()
-        
-        const token = await user.getIdToken()
 
         if (!user) {
             alert('Please log in to use this feature')
             return;
         }
+
+        const token = await user.getIdToken()
             
         try { 
             const response = await axios.post(
@@ -71,7 +69,7 @@ export const GlobalProvider = ({ children }) => {
                     }, 
                 })
 
-            const { result, sessionId } = response.data
+            const { result, sessionId, headline } = response.data; 
 
             if (!currentSessionId) {
                 setCurrentSessionId(sessionId); 
@@ -80,6 +78,17 @@ export const GlobalProvider = ({ children }) => {
             console.log('Frontend fetch result: ', result)
 
             setAnswerList(prevAnswers => [...prevAnswers, { response: result }])
+
+            setHistoryList(prev => [
+                prev.map(history =>
+                    history.sessionId === sessionId ? 
+                    {   ...history, 
+                        headline: headline || history.headline,
+                        answers: [...history.answers, { idea: userInput, answer: result}]
+                    } 
+                    : history
+                 )
+            ])
 
         } catch (err) {
     
@@ -93,8 +102,13 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    const startNewChat = () => {
+        setCurrentSessionId(null);
+        setAnswerList([]); // clear old answers
+    };
+
     return (
-        <GlobalContext.Provider value={{ user, setUser, answerList, handleQuery, currentSessionId, setCurrentSessionId, historyList, setHistoryList }}>
+        <GlobalContext.Provider value={{ user, setUser, answerList, handleQuery, currentSessionId, setCurrentSessionId, historyList, setHistoryList, startNewChat }}>
             {children}
         </GlobalContext.Provider>
     )

@@ -1,6 +1,6 @@
 import express from 'express'
 // import refineIdea from './getIdea.js'
-import { askGroq } from './groq.js'
+import { askGroqTwoStep } from './groq.js'
 import  { Idea, Session } from './dataModel.js'
 import verifyToken from './firebase.js'
 
@@ -15,35 +15,41 @@ router.post('/ideas', verifyToken, async (req, res) => {
     }
 
     try {
-        const aiResponse = await askGroq(query)
+        const { headline, answer } = await askGroqTwoStep(query)
 
         let usedSessionId = sessionId
 
         if (!sessionId) {
-            const newSession = newSession({
+            const newSession = new Session({
                 userId: req.user.uid,
-                headline: aiResponse[0].summary,  
+                headline: headline,  
                 createdAt: Date.now()
             })
 
             await newSession.save()
             usedSessionId = newSession._id
+        } else {
+            const session = await Session.findById(sessionId)
+            if (session && session.headline === 'New chat' && headline != 'New chat') {
+                session.headline = headline 
+                await session.save()
+            }
         }
 
-        if (!aiResponse) {
+        if (!answer) {
             return res.status(500).json({error: 'Failed to get a reponse from Groq'})
         }
         
         const newChat = new Idea({
             sessionId: usedSessionId,
             idea: query, 
-            aiResponse, 
+            answer: answer, 
             createdAt: Date.now(), 
             userId: req.user.uid || null
         })
         await newChat.save()
 
-        return res.status(201).json({ result: newChat, sessionId: usedSessionId })
+        return res.status(201).json({ result: newChat, sessionId: usedSessionId, headline })
 
     } catch (err) {
         console.error("Server error:", err.message)

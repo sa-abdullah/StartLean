@@ -11,7 +11,7 @@ const ideaSchema = new mongoose.Schema({
         type: String, 
         required: true
     }, 
-    aiResponse: {
+    answer: {
         type: mongoose.Schema.Types.Mixed, 
         required: true
     },

@@ -10,7 +10,7 @@ import { HiOutlinePencilSquare } from "react-icons/hi2"
 
 
 export const Sidebar = ({ activeTab, setActiveTab }) => {
-    const { user, historyList } = useGlobal()
+    const { user, historyList, startNewChat } = useGlobal()
     const [tabPaneOpen, setTabPaneOpen] = useState(true)
 
     const tabs = [
@@ -38,7 +38,7 @@ export const Sidebar = ({ activeTab, setActiveTab }) => {
                         <h2 class="text-lg font-semibold">{user?.displayName || 'Abdullah'}</h2>
                     </div>
                     <div class="relative flex flex-1 justify-between">
-                        <button>
+                        <button onClick={startNewChat}>
                             <HiOutlinePencilSquare size={30}/>
                         </button>
                         <button class="" onClick={() => setTabPaneOpen(!tabPaneOpen)}>
