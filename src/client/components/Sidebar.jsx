@@ -164,8 +164,8 @@ export const TopNav = ({ activeChat, setActiveChat }) => {
 
     const tabs = [
         { id: 'idea', label: 'Research Idea', icon: <HiOutlineLightBulb/>}, 
-        { id: 'spec', label: 'Write Product Spec', icon: <FaRegFileAlt/>}, 
-        { id: 'pitch', label: 'Generate Pitch Deck', icon: <HiOutlinePresentationChartBar/>}, 
+        { id: 'spec', label: 'Product Spec', icon: <FaRegFileAlt/>}, 
+        { id: 'pitch', label: 'Pitch Deck', icon: <HiOutlinePresentationChartBar/>}, 
         { id: 'competitor', label: 'Find Competitors', icon: <HiOutlineCollection/>}, 
         { id: 'landing page', label: 'Landing Page', icon: <HiOutlinePhotograph/> }, 
         { id: 'validator', label: 'Validate Idea', icon: <HiOutlineBadgeCheck/>}
