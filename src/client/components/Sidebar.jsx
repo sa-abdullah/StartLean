@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { HiOutlineLightBulb, HiOutlinePresentationChartBar, HiOutlineBadgeCheck, HiMenu, HiSearch, HiOutlineCog, HiOutlineChatAlt2, HiOutlineLogout } from "react-icons/hi"
-import { FaRegFileAlt, FaUserSecret, FaPalette } from "react-icons/fa"
+import { HiOutlineLightBulb, HiOutlinePresentationChartBar, HiOutlineBadgeCheck, HiMenu, HiSearch, HiOutlineCog, HiOutlineChatAlt2, HiOutlineLogout, HiOutlinePencilAlt, HiOutlineCollection, HiOutlinePhotograph } from "react-icons/hi"
+import { FaRegFileAlt } from "react-icons/fa"
 import { useGlobal } from './globalContext'
 import headshot from '../assets/imgs/headshot.jpg'
 import Favicon from '../assets/imgs/favicon.png'
-import { HiOutlinePencilSquare } from "react-icons/hi2"
 
 
 export const Sidebar = ({ activeChat, setActiveChat }) => {
@@ -67,7 +66,7 @@ export const Sidebar = ({ activeChat, setActiveChat }) => {
                     </div>
                     <div class="space-y-2 mb-8">
                         <button onClick={startNewChat} class="flex gap-4 items-center w-full hover:bg-[#f0f0f0] p-2">
-                            <HiOutlinePencilSquare size={20}/> New chat
+                            <HiOutlinePencilAlt size={20}/> New chat
                         </button>
                         <button class="flex gap-4 items-center w-full hover:bg-[#f0f0f0] p-2">
                                 <HiSearch size={20}/> Search
@@ -120,7 +119,7 @@ export const Sidebar = ({ activeChat, setActiveChat }) => {
                             <HiMenu size={20} class=" left-60 top-6"/>
                         </button>
                         <button>
-                            <HiOutlinePencilSquare size={20}/>
+                            <HiOutlinePencilAlt size={20}/>
                         </button>
                         <button>
                             <HiSearch size={20}/>
@@ -167,8 +166,8 @@ export const TopNav = ({ activeChat, setActiveChat }) => {
         { id: 'idea', label: 'Research Idea', icon: <HiOutlineLightBulb/>}, 
         { id: 'spec', label: 'Write Product Spec', icon: <FaRegFileAlt/>}, 
         { id: 'pitch', label: 'Generate Pitch Deck', icon: <HiOutlinePresentationChartBar/>}, 
-        { id: 'competitor', label: 'Find Competitors', icon: <FaUserSecret/>}, 
-        { id: 'landing page', label: 'Design Landing Page', icon: <FaPalette/> }, 
+        { id: 'competitor', label: 'Find Competitors', icon: <HiOutlineCollection/>}, 
+        { id: 'landing page', label: 'Landing Page', icon: <HiOutlinePhotograph/> }, 
         { id: 'validator', label: 'Validate Idea', icon: <HiOutlineBadgeCheck/>}
     ]
 
@@ -177,7 +176,7 @@ export const TopNav = ({ activeChat, setActiveChat }) => {
         <div class="flex min-w-auto items-center bg-white">
             {tabs.map((tab, index) => {
                 return (
-                    <button key={index} onClick={() => setActiveChat(tab.id)} class={`flex gap-2 items-center w-full text-left p-4 rounded ${activeChat === tab.id ? "bg-blue-600 text-white" : "hover:bg-gray-200"}`}>
+                    <button key={index} onClick={() => setActiveChat(tab.id)} class={`flex gap-2 items-center w-full h-full text-left px-4 py-2 border-r-1 border-gray-400  ${activeChat === tab.id ? "bg-gray-100" : "hover:bg-gray-200"}`}>
                         <p class="text-sm">{tab?.icon}</p>
                         <p class="text-sm no-wrap">{tab?.label}</p>
                     </button>
