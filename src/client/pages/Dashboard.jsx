@@ -9,7 +9,7 @@ import { Workspace } from './workspace'
 
 
 const Dashboard = () => {
-    const [activeTab, setActiveTab] = useState('idea')
+    const [activeChat, setActiveChat] = useState('idea')
 
 
     return (
@@ -18,11 +18,11 @@ const Dashboard = () => {
                 {/* <Nav /> */}
                 <div class="flex flex-1 overflow-auto bg-gray-100 relative">
                     <section class="h-full flex flex-1 relative">
-                        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+                        <Sidebar activeChat={activeChat} setActiveChat={setActiveChat} />
                     </section>
                     <section class="flex flex-col w-full">
-                        <TopNav activeTab={activeTab} setActiveTab={setActiveTab} />
-                        <Workspace activeTab={activeTab}/>
+                        <TopNav activeChat={activeChat} setActiveChat={setActiveChat} />
+                        <Workspace activeChat={activeChat}/>
                     </section>
                 </div>
             </div>

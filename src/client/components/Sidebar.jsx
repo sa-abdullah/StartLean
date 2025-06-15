@@ -8,7 +8,7 @@ import Favicon from '../assets/imgs/favicon.png'
 import { HiOutlinePencilSquare } from "react-icons/hi2"
 
 
-export const Sidebar = ({ activeTab, setActiveTab }) => {
+export const Sidebar = ({ activeChat, setActiveChat }) => {
     const { user, historyList, startNewChat, setAnswerList, answerList, setCurrentSessionId, currentSessionId, handleLogout } = useGlobal()
     const [tabPaneOpen, setTabPaneOpen] = useState(true)
     const [logoutModal, setLogoutModal] = useState(false)
@@ -58,45 +58,45 @@ export const Sidebar = ({ activeTab, setActiveTab }) => {
         <>
         {tabPaneOpen ? 
             (
-                <aside class="w-80 bg-white shadow-lg p-4 h-full flex flex-col">
+                <aside class="relative w-80 bg-white shadow-lg p-4 h-full flex flex-col">
                     <div class="relative flex justify-between mb-8">
                         <img src={Favicon} alt="" class="w-5 object-cover"/>
                         <button class="" onClick={() => setTabPaneOpen(!tabPaneOpen)}>
                             <HiMenu size={20} class=" left-60 top-6"/>
                         </button>
                     </div>
-                    <div class="space-y-3 mb-8">
-                        <button onClick={startNewChat} class="flex gap-4 items-center w-full">
+                    <div class="space-y-2 mb-8">
+                        <button onClick={startNewChat} class="flex gap-4 items-center w-full hover:bg-[#f0f0f0] p-2">
                             <HiOutlinePencilSquare size={20}/> New chat
                         </button>
-                        <button class="flex gap-4 items-center w-full">
+                        <button class="flex gap-4 items-center w-full hover:bg-[#f0f0f0] p-2">
                                 <HiSearch size={20}/> Search
                         </button>
-                        <button class="flex gap-4 items-center w-full">
+                        <button class="flex gap-4 items-center w-full hover:bg-[#f0f0f0] p-2">
                                 <HiOutlineCog size={20}/> Settings
                         </button> 
                     </div>
-                    <details class="overflow-y-auto mb-8 flex-1 cursor-pointer">
-                        <summary class="flex gap-4 items-center w-full mb-3">
+                    <details class="relative overflow-y-auto mb-8 flex-1 cursor-pointer">
+                        <summary class="flex gap-4 items-center w-full mb-3 sticky bg-white top-0 py-2  px-2 hover:bg-[#f0f0f0]">
                                 <HiOutlineChatAlt2 size={20}/> Chats
                         </summary>
                         {
                             tabs.map((tab) => (
-                                <ul key={tab.id}>
+                                <div key={tab.id}>
                                     {
                                         typeof tab.content === 'string' ? 
-                                        (<p onChange={() => setActiveTab(tab.id)} class={`flex gap-2 items-center w-full text-left px-4 py-2 mb-2 rounded ${activeTab === tab.id ? "bg-gray-600 text-white" : "hover:bg-gray-200 hidden"}`}>
+                                        (<p onChange={() => setActiveChat(tab.id)} class={`flex gap-2 items-center w-full text-left px-4 py-2 mb-2 rounded ${activeChat === tab.id ? "bg-gray-600 text-white" : "hover:bg-gray-200 hidden"}`}>
                                             {tab.content}
                                         </p>) : 
                                         tab.content.map((item) => (
                                             <button key={item.sessionId} 
                                                 onClick={() => fetchPastAnswers(item.answers, item.sessionId)} 
-                                                onChange={() => setActiveTab(tab.id)} class={`flex gap-2 items-center w-full text-left px-2 py-2 mb-2 rounded ${activeTab !== tab.id ? "hidden" : currentSessionId === item.sessionId ? "bg-blue-600 text-white" : "bg-[#f0f0f0] hover:bg-gray-200"}`}>
-                                            {item.headline.length > 34 ? `${item.headline.slice(0, 34)}...` : item.headline}
+                                                onChange={() => setActiveChat(tab.id)} class={`flex gap-2 items-center w-full text-left px-2 py-2 rounded indent-3 ${activeChat !== tab.id ? "hidden" : currentSessionId === item.sessionId ? "bg-gray-300" : "hover:bg-gray-100"}`}>
+                                                {item.headline.length > 25 ? `${item.headline.slice(0, 25)}...` : item.headline}
                                             </button>
                                         ))
                                     }
-                                </ul>
+                                </div>
                             ))
                         }
                     </details>
@@ -161,7 +161,7 @@ const Modal = ({ show, onClose, children }) => {
     )
 }
 
-export const TopNav = ({ activeTab, setActiveTab }) => {
+export const TopNav = ({ activeChat, setActiveChat }) => {
 
     const tabs = [
         { id: 'idea', label: 'Research Idea', icon: <HiOutlineLightBulb/>}, 
@@ -177,7 +177,7 @@ export const TopNav = ({ activeTab, setActiveTab }) => {
         <div class="flex min-w-auto items-center bg-white">
             {tabs.map((tab, index) => {
                 return (
-                    <button key={index} onClick={() => setActiveTab(tab.id)} class={`flex gap-2 items-center w-full text-left p-4 rounded ${activeTab === tab.id ? "bg-blue-600 text-white" : "hover:bg-gray-200"}`}>
+                    <button key={index} onClick={() => setActiveChat(tab.id)} class={`flex gap-2 items-center w-full text-left p-4 rounded ${activeChat === tab.id ? "bg-blue-600 text-white" : "hover:bg-gray-200"}`}>
                         <p class="text-sm">{tab?.icon}</p>
                         <p class="text-sm no-wrap">{tab?.label}</p>
                     </button>
