@@ -16,21 +16,22 @@ export const IdeaModule = () => {
         setText('')
     }
 
+    console.log('answerList:', answerList)
+
     
     return (
         <div class="h-full flex flex-col items-center justify-center gap-10">
-            {<h2 class="text-3xl">Tell Me Your Startup Idea</h2>}
+            {!answerList.length && <h2 class="text-3xl">Tell Me Your Startup Idea</h2>}
             <ul class="overflow-y-scroll w-[80%] h-auto">
                 {[...answerList].reverse().map((item, index) => (
                     <div class="relative w-full h-fit prose px-3 py-6" key={index}>
-                        {typeof item.response === 'string' ? (
-                            <p class="text-red-500">{item?.response}</p>
+                        {typeof item === 'string' ? (
+                            <p class="text-red-500">{item}</p>
                         ):(
                             <>
-                                <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response.idea}</p>
-                                <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.response?.aiResponse?.summary}</p>
-                                <FormattedResponse content={item?.response?.aiResponse?.reply}/>
-                                <CopyTextBlock text={item?.response?.aiResponse?.reply}/>
+                                <p class="bg-gray-300 px-6 py-4 rounded-2xl w-fit ml-auto text-lg">{item.idea}</p>
+                                <FormattedResponse content={item?.answer}/>
+                                <CopyTextBlock text={item?.answer}/>
                             </>
                         )}
                     </div>

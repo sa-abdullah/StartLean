@@ -33,7 +33,7 @@ const markdownComponents = {
 const FormattedResponse = ({ content }) => (
   <div className="prose">
     <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-      {content}
+      {typeof content === 'string' ? content : JSON.stringify(content)}
     </ReactMarkdown>
   </div>
 )

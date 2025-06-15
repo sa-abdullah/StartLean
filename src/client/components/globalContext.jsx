@@ -1,9 +1,10 @@
 import { useContext, createContext, useState, useEffect } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 const GlobalContext = createContext()
 import { leanAuth } from '../../backend/auth'
 import { onAuthStateChanged } from 'firebase/auth'
+import { signOut } from 'firebase/auth'
 
 
 const backendBaseUrl = import.meta.env.VITE_BACKEND_URL
@@ -13,6 +14,7 @@ export const GlobalProvider = ({ children }) => {
     const [answerList, setAnswerList] = useState([])
     const [currentSessionId, setCurrentSessionId] = useState(null)
     const [historyList, setHistoryList] = useState([])
+    // const [logOut, setLogOut] = useState(false)
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(leanAuth, (currentUser) => {
@@ -37,6 +39,7 @@ export const GlobalProvider = ({ children }) => {
                     },
                 }); 
                 setHistoryList(res.data)
+                console.log('Fetched History', res.data)
             } catch (err) {
                 console.error("Failed to fetch history", err)
             }
@@ -77,19 +80,40 @@ export const GlobalProvider = ({ children }) => {
 
             console.log('Frontend fetch result: ', result)
 
-            setAnswerList(prevAnswers => [...prevAnswers, { response: result }])
+            setAnswerList(prevAnswers => [...prevAnswers, result])
 
-            setHistoryList(prev => (
-                prev.map(history =>
-                    history.sessionId === sessionId ? 
-                    {   ...history, 
-                        headline: headline || history.headline,
-                        answers: [...history.answers, { idea: userInput, answer: result}]
-                    } 
-                    : history
-                )
-            ))
+            setHistoryList(prev => {
 
+                let found = false
+                
+                const updated = prev.map(history => {
+
+                    const updatedHeadline = history.headline === 'New chat' && headline !== 'New chat' ? 
+                    headline : 
+                    history.headline; 
+
+                    if (history.sessionId === sessionId) {
+                        found = true
+                        return {
+                            ...history,
+                            headline: updatedHeadline,
+                            answers: [...history.answers, { idea: userInput, answer: result.answer }]
+                        }
+                    }
+                    return history
+                });
+
+                return found ?   
+                    updated :   
+                    [
+                        {
+                            sessionId,
+                            headline, 
+                            answers: [{ idea: result.idea, answer: result.answer }]
+                        }, 
+                        ...prev
+                    ]
+            })
         } catch (err) {
     
             console.error('Frontend fetch error:', err)
@@ -98,7 +122,7 @@ export const GlobalProvider = ({ children }) => {
             err.message === 'Network Error' ?
             '🌐 Network Error: Could not connect to server.' :
             '❌ Something went wrong. Please try again';
-            setAnswerList(prev => [...prev, { response: message }])
+            setAnswerList(prev => [...prev,  message ])
         }
     }
 
@@ -107,8 +131,19 @@ export const GlobalProvider = ({ children }) => {
         setAnswerList([]); // clear old answers
     };
 
+    const handleLogout = async () => {
+        try {
+            await signOut(leanAuth)
+            localStorage.removeItem('token')
+            sessionStorage.removeItem('token')
+            setUser(null)
+        } catch (err) {
+            console.log('Could not log out', err)
+        }
+    }
+
     return (
-        <GlobalContext.Provider value={{ user, setUser, answerList, handleQuery, currentSessionId, setCurrentSessionId, historyList, setHistoryList, startNewChat }}>
+        <GlobalContext.Provider value={{ user, setUser, answerList, setAnswerList, handleQuery, currentSessionId, setCurrentSessionId, historyList, setHistoryList, startNewChat, handleLogout }}>
             {children}
         </GlobalContext.Provider>
     )
